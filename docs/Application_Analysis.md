@@ -118,6 +118,7 @@
 ## 5. Data Model
 
 ### 5.1 Booking Object
+```json
 {
     "firstname": "Josh",
     "lastname": "Allen",
@@ -129,6 +130,7 @@
     },
     "additionalneeds": "super bowls"
 }
+```
 
 ---
 
