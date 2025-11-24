@@ -173,17 +173,17 @@ The primary objective of this test strategy is to define a comprehensive testing
 
 ## 5. Testing Tools
 
-| Tool | Purpose |
-|------|---------|
-| **Python** | API automation scripting |
-| **Pytest** | API test framework |
-| **Requests** | HTTP library for API calls |
-| **Selenium WebDriver** | UI automation |
-| **Postman** | API collection management |
-| **Newman** | Command-line Postman runner |
-| **GitHub Actions** | CI/CD automation |
-| **Docker** | Test environment containerization |
-| **Git/GitHub** | Version control |
+| Tool | Purpose | Version |
+|------|---------|---------|
+| **Python** | API automation scripting | 3.12+ |
+| **Pytest** | API test framework | 9.0.1 |
+| **Requests** | HTTP library for API calls | 2.32.5 |
+| **Selenium WebDriver** | UI automation | N/A |
+| **Postman** | API collection management | Latest |
+| **Newman** | Command-line Postman runner | Latest |
+| **GitHub Actions** | CI/CD automation | N/A |
+| **Docker** | Test environment containerization | Latest |
+| **Git/GitHub** | Version control | Latest |
 
 ---
 

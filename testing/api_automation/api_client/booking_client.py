@@ -1,6 +1,7 @@
 from .base_client import BaseAPIClient
 
 class BookingClient(BaseAPIClient):
+    """Client to handle booking-related API calls."""
     def __init__(self, base_url):
         super().__init__(base_url)
 

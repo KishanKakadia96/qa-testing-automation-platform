@@ -1,6 +1,7 @@
 import requests
 
 class BaseAPIClient:
+    """A base API client to handle HTTP requests."""
     def __init__(self, base_url):
         self.base_url = base_url.rstrip('/')
 
