@@ -1,0 +1,74 @@
+[
+    {
+        "firstname": "",
+        "lastname": "Doe",
+        "totalprice": 100,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2025-12-10",
+            "checkout": "2025-12-15"
+        },
+        "additionalneeds": "",
+        "expected_status": 400
+    },
+    {
+        "firstname": "John",
+        "lastname": "",
+        "totalprice": 100,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2025-12-01",
+            "checkout": "2025-12-05"
+        },
+        "additionalneeds": "Breakfast",
+        "expected_status": 400
+    },
+    {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": -50,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2025-12-20",
+            "checkout": "2025-12-25"
+        },
+        "additionalneeds": "",
+        "expected_status": 400
+    },
+    {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": 100,
+        "depositpaid": false,
+        "bookingdates": {
+            "checkin": "2025-12-25",
+            "checkout": "2025-12-20"
+        },
+        "additionalneeds": "",
+        "expected_status": 400
+    },
+    {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": 100,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "invalid-date",
+            "checkout": "2025-12-15"
+        },
+        "additionalneeds": "Lunch",
+        "expected_status": 400
+    },
+    {
+        "firstname": "John",
+        "lastname": "Doe",
+        "totalprice": 100,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2025-13-01",
+            "checkout": "2025-12-15"
+        },
+        "additionalneeds": "Dinner",
+        "expected_status": 400
+    }
+]
