@@ -1,22 +1,4 @@
-import pytest
-from api_client.auth_client import AuthClient
-from api_client.booking_client import BookingClient
-from config.config import BASE_URL
-
-@pytest.fixture(scope="module") #use fixture to create fresh client instance
-def auth_client():
-    return AuthClient(BASE_URL)
-
-@pytest.fixture(scope="module")
-def booking_client():
-    return BookingClient(BASE_URL)
-
-def test_login(auth_client):
-    """Test the login functionality of the AuthClient."""
-    token = auth_client.login(username="admin", password="password123")
-    assert token is not None
-    assert isinstance(token, str)
-    print(f"Received Auth Token: {token}")
+# Functional tests for Booking CRUD operations
 
 def test_create_and_get_booking(booking_client):
     """Test creating and retrieving a booking."""
@@ -48,9 +30,9 @@ def test_create_and_get_booking(booking_client):
 
     print(f"Booking created and verified successfully with ID: {booking_id}")
 
-def test_update_booking(booking_client, auth_client):
+def test_update_booking(booking_client, auth_token):
     """Test updating a Booking"""
-    #First create a booking to update
+    # First create a booking to update
     booking_data = {
         "firstname": "Test",
         "lastname": "User",
@@ -69,9 +51,6 @@ def test_update_booking(booking_client, auth_client):
     booking_id = response.json().get("bookingid")
     assert booking_id is not None
 
-    # Login to get token
-    token = auth_client.login(username="admin", password="password123")
-    assert token is not None
     # Update booking data
     updated_data = {
         "firstname": "Updated",
@@ -84,7 +63,7 @@ def test_update_booking(booking_client, auth_client):
         },
         "additionalneeds": "Dinner"
     }
-    update_response = booking_client.update_booking(booking_id, updated_data, token)
+    update_response = booking_client.update_booking(booking_id, updated_data, auth_token)
     assert update_response.status_code == 200
     updated_booking = update_response.json()
     assert updated_booking["firstname"] == updated_data["firstname"]
@@ -92,9 +71,9 @@ def test_update_booking(booking_client, auth_client):
 
     print(f"Booking with ID: {booking_id} updated successfully.")
 
-def test_delete_booking(booking_client, auth_client):
+def test_delete_booking(booking_client, auth_token):
     """Test deleting a Booking"""
-    #First create a booking to delete
+    # First create a booking to delete
     booking_data = {
         "firstname": "Test",
         "lastname": "User",
@@ -113,12 +92,8 @@ def test_delete_booking(booking_client, auth_client):
     booking_id = response.json().get("bookingid")
     assert booking_id is not None
 
-    # Login to get token
-    token = auth_client.login(username="admin", password="password123")
-    assert token is not None
-
     # Delete booking
-    delete_response = booking_client.delete_booking(booking_id, token)
+    delete_response = booking_client.delete_booking(booking_id, auth_token)
     assert delete_response.status_code == 201  # As per API docs, deletion returns 201
 
     # Verify deletion by attempting to get the deleted booking

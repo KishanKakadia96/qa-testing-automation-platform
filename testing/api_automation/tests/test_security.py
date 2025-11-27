@@ -1,13 +1,7 @@
-import pytest
-from api_client.booking_client import BookingClient
-from config.config import BASE_URL
-
-@pytest.fixture(scope="module")
-def booking_client():
-    return BookingClient(BASE_URL)
+# Functional tests for security aspects of the Booking API
 
 def test_update_without_token(booking_client):
-    # First create a booking
+    '''Test updating a booking without providing an auth token'''
     data = {
         "firstname": "User1",
         "lastname": "Test",
@@ -28,7 +22,7 @@ def test_update_without_token(booking_client):
     print(f"Status: {response.status_code}")
 
 def test_delete_without_token(booking_client):
-    # Create booking first
+    '''Test deleting a booking without providing an auth token'''
     data = {
         "firstname": "User2",
         "lastname": "Test",
