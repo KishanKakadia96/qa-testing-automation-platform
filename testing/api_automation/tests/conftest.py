@@ -8,8 +8,6 @@ from ..api_client.auth_client import AuthClient
 from ..api_client.booking_client import BookingClient
 from ..configs.config import config
 
-Base_url = config.BASE_URL
-
 def load_test_data(filename: str):
     """Load JSON test data from the local data/ directory."""
     tests_dir = Path(__file__).parent
@@ -43,3 +41,20 @@ def auth_token(auth_client):
     token = auth_client.login(username=config.USERNAME, password=config.PASSWORD)
     logging.info("Authenticated and obtained token for test session.")
     return token
+
+@pytest.fixture(scope="session")
+def sample_booking_data():
+    """Load sample booking data for tests."""
+    booking_data = {
+        "firstname": "Test",
+        "lastname": "User",
+        "totalprice": 100,
+        "depositpaid": True,
+        "bookingdates": {
+            "checkin": "2025-12-01",
+            "checkout": "2025-12-05"
+        },
+        "additionalneeds": "Breakfast"
+
+    }
+    return booking_data

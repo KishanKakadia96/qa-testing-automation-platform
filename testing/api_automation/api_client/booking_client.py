@@ -10,7 +10,10 @@ class BookingClient(BaseAPIClient):
 
     def get_booking(self, booking_id):
         return self.get(f"/booking/{booking_id}")
-
+    
+    def get_all_bookings(self):
+        return self.get("/booking")
+    
     def update_booking(self, booking_id, data, token):
         headers = {"Cookie": f"token={token}"}
         return self.put(f"/booking/{booking_id}", data=data, headers=headers)

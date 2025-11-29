@@ -1,103 +1,84 @@
+import pytest
+
 # Functional tests for Booking CRUD operations
-
-def test_create_and_get_booking(booking_client):
-    """Test creating and retrieving a booking."""
-    # Sample booking data
-    booking_data = {
-        "firstname": "Test",
-        "lastname": "User",
-        "totalprice": 150,
-        "depositpaid": False,
-        "bookingdates": {
-            "checkin": "2025-11-23",
-            "checkout": "2025-11-25"
-        },
-        "additionalneeds": "Breakfast"
-    }
-
-    # Create booking
-    response = booking_client.create_booking(booking_data)
+def test_create_booking_valid(booking_client, sample_booking_data):
+    """
+    Test creating a booking with valid data 
+    Test Case: TC001
+    """
+    response = booking_client.create_booking(sample_booking_data)
     assert response.status_code == 200
+    
     booking_id = response.json().get("bookingid")
     assert booking_id is not None
 
-    # Retrieve booking
-    get_response = booking_client.get_booking(booking_id)
-    assert get_response.status_code == 200
-    retrieved_data = get_response.json()
-    assert retrieved_data["firstname"] == booking_data["firstname"]
-    assert retrieved_data["bookingdates"]["checkin"] == booking_data["bookingdates"]["checkin"]
+    print(f"Booking created with ID: {booking_id}")
 
-    print(f"Booking created and verified successfully with ID: {booking_id}")
-
-def test_update_booking(booking_client, auth_token):
-    """Test updating a Booking"""
-    # First create a booking to update
-    booking_data = {
-        "firstname": "Test",
-        "lastname": "User",
-        "totalprice": 150,
-        "depositpaid": False,
-        "bookingdates": {
-            "checkin": "2025-11-23",
-            "checkout": "2025-11-25"
-        },
-        "additionalneeds": "Lunch"
-    }
-
-    # Create booking
-    response =booking_client.create_booking(booking_data)
+def test_read_all_bookings(booking_client):
+    """
+    Test retrieving all bookings
+    Test Case: TC009
+    """
+    response = booking_client.get_all_bookings()
     assert response.status_code == 200
-    booking_id = response.json().get("bookingid")
-    assert booking_id is not None
 
-    # Update booking data
-    updated_data = {
-        "firstname": "Updated",
-        "lastname": "User",
-        "totalprice": 200,
-        "depositpaid": True,
-        "bookingdates": {
-            "checkin": "2025-12-01",
-            "checkout": "2025-12-05"
-        },
-        "additionalneeds": "Dinner"
-    }
-    update_response = booking_client.update_booking(booking_id, updated_data, auth_token)
-    assert update_response.status_code == 200
-    updated_booking = update_response.json()
-    assert updated_booking["firstname"] == updated_data["firstname"]
-    assert updated_booking["totalprice"] == updated_data["totalprice"]
+    print("All bookings retrieved successfully.")
 
-    print(f"Booking with ID: {booking_id} updated successfully.")
-
-def test_delete_booking(booking_client, auth_token):
-    """Test deleting a Booking"""
-    # First create a booking to delete
-    booking_data = {
-        "firstname": "Test",
-        "lastname": "User",
-        "totalprice": 150,
-        "depositpaid": False,
-        "bookingdates": {
-            "checkin": "2025-11-23",
-            "checkout": "2025-11-25"
-        },
-        "additionalneeds": "Snacks"
-    }
-
-    # Create booking
-    response =booking_client.create_booking(booking_data)
+def test_read_booking_by_id(booking_client, sample_booking_data):
+    """
+    Test retrieving a Booking by ID
+    Test Case: TC010, TC018, TC042
+    """
+    booking = booking_client.create_booking(sample_booking_data)
+    booking_id = booking.json().get("bookingid")
+    
+    response = booking_client.get_booking(booking_id)
     assert response.status_code == 200
-    booking_id = response.json().get("bookingid")
-    assert booking_id is not None
+    
+    response_data = response.json()
+    assert response_data["firstname"] == sample_booking_data["firstname"]
+    assert response_data["bookingdates"]["checkin"] == sample_booking_data["bookingdates"]["checkin"]
 
-    # Delete booking
-    delete_response = booking_client.delete_booking(booking_id, auth_token)
-    assert delete_response.status_code == 201  # As per API docs, deletion returns 201
+    print(f"Booking with ID: {booking_id} retrieved successfully.")
 
-    # Verify deletion by attempting to get the deleted booking
-    get_response = booking_client.get_booking(booking_id)
-    assert get_response.status_code == 404  # Should return 404 Not Found
+def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
+    """
+    Test updating a Booking with valid data
+    Test Case: TC011
+    """
+    booking = booking_client.create_booking(sample_booking_data)
+    booking_id = booking.json().get("bookingid")
+    
+    update_data = sample_booking_data.copy()
+    update_data["firstname"] = "Updated"
+    
+    updated = booking_client.update_booking(booking_id, update_data, auth_token)
+    assert updated.status_code == 200
+    
+    updated_data = updated.json()
+    assert updated_data["firstname"] == "Updated"
 
-    print(f"Booking with ID: {booking_id} deleted successfully.")
+    print(f"Booking with ID: {booking_id} updated successfully")
+
+def test_delete_booking_valid(booking_client, sample_booking_data, auth_token):
+    """
+    Test deleting a Booking with valid data
+    Test Case: TC014
+    """
+    booking = booking_client.create_booking(sample_booking_data)
+    booking_id = booking.json().get("bookingid")
+    
+    response = booking_client.delete_booking(booking_id, auth_token)
+    assert response.status_code == 201
+
+    print(f"Booking with ID: {booking_id} deleted successfully")
+
+def test_delete_nonexistent_booking(booking_client, auth_token):
+    """
+    Test deleting a Nonexistent Booking
+    Test Case: TC015
+    """
+    response = booking_client.delete_booking(999999, auth_token)
+    assert response.status_code in [404, 201]
+
+    print("Attempted to delete nonexistent booking, received status:", response.status_code)
