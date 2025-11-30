@@ -1,74 +1,178 @@
 [
     {
-        "firstname": "",
-        "lastname": "Doe",
-        "totalprice": 100,
-        "depositpaid": true,
-        "bookingdates": {
-            "checkin": "2025-12-10",
-            "checkout": "2025-12-15"
+        "test_case": "TC002",
+        "description": "Missing firstname",
+        "data": {
+            "firstname": "",
+            "lastname": "Doe",
+            "totalprice": 150,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": "Dinner"
         },
-        "additionalneeds": "",
         "expected_status": 400
     },
     {
-        "firstname": "John",
-        "lastname": "",
-        "totalprice": 100,
-        "depositpaid": true,
-        "bookingdates": {
-            "checkin": "2025-12-01",
-            "checkout": "2025-12-05"
+        "test_case": "TC003",
+        "description": "Missing lastname",
+        "data": {
+            "firstname": "John",
+            "lastname": "",
+            "totalprice": 150,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": "lunch"
         },
-        "additionalneeds": "Breakfast",
         "expected_status": 400
     },
     {
-        "firstname": "John",
-        "lastname": "Doe",
-        "totalprice": -50,
-        "depositpaid": false,
-        "bookingdates": {
-            "checkin": "2025-12-20",
-            "checkout": "2025-12-25"
+        "test_case": "TC005",
+        "description": "Negative price",
+        "data": {
+            "firstname": "Jane",
+            "lastname": "Doe",
+            "totalprice": -100,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": "Breakfast"
         },
-        "additionalneeds": "",
         "expected_status": 400
     },
     {
-        "firstname": "John",
-        "lastname": "Doe",
-        "totalprice": 100,
-        "depositpaid": false,
-        "bookingdates": {
-            "checkin": "2025-12-25",
-            "checkout": "2025-12-20"
+        "test_case": "TC006",
+        "description": "No deposit",
+        "data": {
+            "firstname": "Jane",
+            "lastname": "Doe",
+            "totalprice": 400,
+            "depositpaid": false,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": "Dinner"
         },
-        "additionalneeds": "",
         "expected_status": 400
     },
     {
-        "firstname": "John",
-        "lastname": "Doe",
-        "totalprice": 100,
-        "depositpaid": true,
-        "bookingdates": {
-            "checkin": "invalid-date",
-            "checkout": "2025-12-15"
+        "test_case": "TC004",
+        "description": "Invalid dates - month out of range",
+        "data": {
+            "firstname": "Jane",
+            "lastname": "Doe",
+            "totalprice": 150,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-13-20",
+                "checkout": "2025-11-22"
+            },
+            "additionalneeds": "Breakfast"
         },
-        "additionalneeds": "Lunch",
         "expected_status": 400
     },
     {
-        "firstname": "John",
-        "lastname": "Doe",
-        "totalprice": 100,
-        "depositpaid": true,
-        "bookingdates": {
-            "checkin": "2025-13-01",
-            "checkout": "2025-12-15"
+        "test_case": "TC007",
+        "description": "Empty additionalneeds",
+        "data": {
+            "firstname": "John",
+            "lastname": "Doe",
+            "totalprice": 180,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": ""
         },
-        "additionalneeds": "Dinner",
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC008",
+        "description": "Special characters in name",
+        "data": {
+            "firstname": "$John",
+            "lastname": "!Doe",
+            "totalprice": 220,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-11-22",
+                "checkout": "2025-11-23"
+            },
+            "additionalneeds": "Breakfast"
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC020-TC047",
+        "description": "All empty fields",
+        "data": {
+            "firstname": "",
+            "lastname": "",
+            "totalprice": "",
+            "depositpaid": false,
+            "bookingdates": {
+                "checkin": "",
+                "checkout": ""
+            },
+            "additionalneeds": ""
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC035-TC036",
+        "description": "Unicode characters",
+        "data": {
+            "firstname": "¥±?µ?",
+            "lastname": "¾©¢É",
+            "totalprice": 400,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-10",
+                "checkout": "2025-12-15"
+            },
+            "additionalneeds": "lunch"
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC052",
+        "description": "Invalid type (string for price)",
+        "data": {
+            "firstname": "John",
+            "lastname": "Doe",
+            "totalprice": "abc",
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-10",
+                "checkout": "2025-12-15"
+            },
+            "additionalneeds": "Breakfast"
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC068",
+        "description": "Invalid date order",
+        "data": {
+            "firstname": "John",
+            "lastname": "Doe",
+            "totalprice": 150,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-10",
+                "checkout": "2025-12-09"
+            },
+            "additionalneeds": "Lunch"
+        },
         "expected_status": 400
     }
 ]

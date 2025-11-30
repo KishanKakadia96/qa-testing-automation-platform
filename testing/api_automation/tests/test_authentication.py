@@ -2,29 +2,37 @@ import pytest
 from ..configs.config import config
 
 # Tests for authentication functionality of the Booking API
-''' 
-Note: 
-username and password are already available on website documentation,
-but for Actual production-level testing, these should be stored securely in environment variables.
-'''
 def test_valid_login(auth_client):
-    """Test the login functionality with valid credentials."""
+    """
+    Test the login functionality with valid credentials.
+    Test Case: TC016
+    """
     token = auth_client.login(username=config.USERNAME, password=config.PASSWORD)
     assert token is not None
     assert isinstance(token, str)
-    print(f"Token: {token}")
+    
+    print(f"Login successful, received token")
 
-def test_invalid_username(auth_client):
-    '''Test login with invalid username'''
+@pytest.mark.parametrize("username, password, test_scenario", [
+    ("wronguser", config.PASSWORD, "Invalid Username"),
+    (config.USERNAME, "wrongpass", "Invalid Password"),
+])
+def test_invalid_credentials(auth_client, username, password, test_scenario):
+    '''
+    Test login with invalid credentials (username or password)
+    Test Case: TC017
+    '''
     with pytest.raises(AssertionError):
-        auth_client.login(username="wronguser", password=config.PASSWORD)
-
-def test_invalid_password(auth_client):
-    '''Test login with invalid password'''
-    with pytest.raises(AssertionError):
-        auth_client.login(username=config.USERNAME, password="wrongpass")
+        auth_client.login(username=username, password=password)
+    
+    print(f"Login failed as expected with invalid credentials")
 
 def test_empty_credentials(auth_client):
-    '''Test login with empty username and password'''
+    '''
+    Test login with empty username and password
+    Test Case: TC056
+    '''
     with pytest.raises(AssertionError):
         auth_client.login(username="", password="")
+
+    print("Login failed as expected with empty credentials")
