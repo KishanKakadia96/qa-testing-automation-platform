@@ -41,10 +41,20 @@ def test_read_booking_by_id(booking_client, sample_booking_data):
 
     print(f"Booking with ID: {booking_id} retrieved successfully.")
 
+def test_read_nonexistent_booking(booking_client):
+    """
+    Test retrieving a Nonexistent Booking
+    Test Case: TC019
+    """
+    response = booking_client.get_booking(999999999)  # Assuming this ID does not exist
+    assert response.status_code == 404
+
+    print("Nonexistent booking retrieval correctly returned 404.")
+
 def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
     """
     Test updating a Booking with valid data
-    Test Case: TC011
+    Test Case: TC011, TC043
     """
     booking = booking_client.create_booking(sample_booking_data)
     booking_id = booking.json().get("bookingid")
@@ -58,18 +68,45 @@ def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
     updated_data = updated.json()
     assert updated_data["firstname"] == "Updated"
 
+    # Verify update
+    updates_value = booking_client.get_booking(booking_id)
+    assert updates_value["firstname"] == "Updated"
+
     print(f"Booking with ID: {booking_id} updated successfully")
+
+def test_update_and_delete_booking_invalid_token(booking_client, sample_booking_data):
+    """
+    Test updating and deleting a Booking with invalid auth token
+    Test Case: TC027, TC028
+    """
+    booking = booking_client.create_booking(sample_booking_data)
+    booking_id = booking.json().get("bookingid")
+    
+    update_data = sample_booking_data.copy()
+    update_data["firstname"] = "InvalidTokenUpdate"
+    
+    updated = booking_client.update_booking(booking_id, update_data, "invalid_token")
+    assert updated.status_code == 403
+
+    deleted = booking_client.delete_booking(booking_id, "invalid_token")
+    assert deleted.status_code == 403
+
+    print(f"Booking with ID: {booking_id} update and delete with invalid token correctly returned 403")
 
 def test_delete_booking_valid(booking_client, sample_booking_data, auth_token):
     """
     Test deleting a Booking with valid data
-    Test Case: TC014
+    Test Case: TC014, TC044
     """
     booking = booking_client.create_booking(sample_booking_data)
     booking_id = booking.json().get("bookingid")
     
     response = booking_client.delete_booking(booking_id, auth_token)
     assert response.status_code == 201
+
+    # Verify deletion
+    with pytest.raises(AssertionError):
+        booking_client.get_booking(booking_id)  # Should fail
 
     print(f"Booking with ID: {booking_id} deleted successfully")
 

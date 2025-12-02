@@ -128,6 +128,53 @@
         "expected_status": 400
     },
     {
+        "test_case": "TC021",
+        "description": "Optional Fields Empty",
+        "data": {
+            "firstname": "Alice",
+            "lastname": "Smith",
+            "totalprice": 200,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-01",
+                "checkout": "2025-12-05"
+            }
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC033",
+        "description": "minimum allowed values",
+        "data": {
+            "firstname": "A",
+            "lastname": "B",
+            "totalprice": 100,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-01",
+                "checkout": "2025-12-02"
+            },
+            "additionalneeds": "Breakfast"
+        },
+        "expected_status": 400
+    },
+    {
+        "test_case": "TC034",
+        "description": "Maximus allowed values",
+        "data": {
+            "firstname": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "lastname": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+            "totalprice": 10000,
+            "depositpaid": true,
+            "bookingdates": {
+                "checkin": "2025-12-01",
+                "checkout": "2025-12-31"
+            },
+            "additionalneeds": "DinnerDinnerDinnerDinnerDinnerDinnerDinnerDinnerDinnerDinner"
+        },
+        "expected_status": 400
+    },
+    {
         "test_case": "TC035-TC036",
         "description": "Unicode characters",
         "data": {

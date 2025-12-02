@@ -9,7 +9,7 @@ test_data = load_test_data('bookings_test_data.json')
 def test_booking_validation_cases(booking_client, test_item):
     """
     Test various booking creation scenarios for validation.
-    Test Covers: TC002, TC008, TC012-TC013, TC020, TC022, TC032-TC036, TC045, TC047, TC052, TC068
+    Test Covers: TC002-TC008, TC012-TC013, TC020, TC022, TC032-TC036, TC045, TC047, TC052, TC068
     """
     
     test_case = test_item["test_case"]
