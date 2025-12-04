@@ -1,0 +1,705 @@
+{
+	"info": {
+		"_postman_id": "4f0e57c9-4eb6-4fcc-9938-255eb86b3293",
+		"name": "QA-Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20481784"
+	},
+	"item": [
+		{
+			"name": "Authentication.postman_collection.json",
+			"item": [
+				{
+					"name": "TC016",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC016: Valid login succeeds\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('token');\r",
+									"    pm.environment.set(\"token\", jsonData.token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC017",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC017: Invalid username fails\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"wronguser\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"// Auto-login before tests\r",
+							"if (!pm.environment.get(\"token\")) {\r",
+							"    pm.sendRequest({\r",
+							"        url: pm.environment.get(\"base_url\") + \"/auth\",\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: pm.environment.get(\"username\"),\r",
+							"                password: pm.environment.get(\"password\")\r",
+							"            })\r",
+							"        }\r",
+							"    }, (err, response) => {\r",
+							"        pm.environment.set(\"token\", response.json().token);\r",
+							"    });\r",
+							"}\r",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Bookings_CRUD.postman_collection.json",
+			"item": [
+				{
+					"name": "TC001",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC001: Valid booking created\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('bookingid');\r",
+									"    pm.environment.set(\"booking_id\", jsonData.bookingid);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"John\",\r\n  \"lastname\": \"Doe\", \r\n  \"totalprice\": 150,\r\n  \"depositpaid\": true,\r\n  \"bookingdates\": {\r\n    \"checkin\": \"2025-11-22\",\r\n    \"checkout\": \"2025-11-23\"\r\n  },\r\n  \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC009",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC009: Get all bookings\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC010/TC018/TC042",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC010/TC018/TC042: Get specific booking\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const booking = pm.response.json();\r",
+									"    pm.expect(booking.bookingid).to.eql(pm.environment.get(\"booking_id\"));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/booking/{{booking_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{booking_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings_Validation.postman_collection.json",
+			"item": [
+				{
+					"name": "TC002",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC002: Missing firstname\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": null,\r\n    \"lastname\": \"Doe\",\r\n    \"totalprice\": 150,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-22\",\r\n        \"checkout\": \"2025-11-23\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC003",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"John\",\r\n  \"lastname\": \"Doe\", \r\n  \"totalprice\": 150,\r\n  \"depositpaid\": true,\r\n  \"bookingdates\": {\r\n    \"checkin\": \"2025-11-22\",\r\n    \"checkout\": \"2025-11-23\"\r\n  },\r\n  \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC004",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC004: Invalid dates (checkout < checkin)\", () => {\r",
+									"    pm.response.to.have.status(200); // API validates but still returns 200 instead of 400 [web:50]\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Jane\",\r\n    \"lastname\": \"Doe\",\r\n    \"totalprice\": 150,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-23\",\r\n        \"checkout\": \"2025-11-22\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC005",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC005: Negative price\", () => {\r",
+									"    pm.response.to.have.status(200); // API accepts negative price instead of rejecting [web:50]\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Jane\",\r\n  \"lastname\": \"Doe\",\r\n  \"totalprice\": -100,\r\n  \"depositpaid\": true,\r\n  \"bookingdates\": {\r\n    \"checkin\": \"2025-11-22\",\r\n    \"checkout\": \"2025-11-23\"\r\n  },\r\n  \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC006",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC006: No depositpaid field\", () => {\r",
+									"    pm.response.to.have.status(200); // API treats missing depositpaid leniently [web:49][web:50]\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Alice\",\r\n    \"lastname\": \"Smith\",\r\n    \"totalprice\": 200,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-22\",\r\n        \"checkout\": \"2025-11-23\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC007",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC006: No depositpaid field\", () => {\r",
+									"    pm.response.to.have.status(200); // API treats missing depositpaid leniently [web:49][web:50]\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Alice\",\r\n    \"lastname\": \"Smith\",\r\n    \"totalprice\": 200,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-22\",\r\n        \"checkout\": \"2025-11-23\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC008",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC008: Special characters in names\", () => {\r",
+									"    pm.response.to.have.status(200); // API accepts special characters in strings [web:49][web:56]\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"$lice\",\r\n    \"lastname\": \"!Smith\",\r\n    \"totalprice\": 220,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-22\",\r\n        \"checkout\": \"2025-11-23\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Security_Tests.postman_collection.json",
+			"item": [
+				{
+					"name": "TC025",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC025: Unauthorized update\", () => {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking/{{booking_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{booking_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC053",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"Tests:\r",
+									"pm.test(\"TC053: XSS and SQL injection\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"<script>alert('XSS')</script>\",\r\n    \"lastname\": \"Doe\",\r\n    \"totalprice\": 100,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2025-11-22\",\r\n        \"checkout\": \"2025-11-23\"\r\n    },\r\n    \"additionalneeds\": \"Lunch\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"value": ""
+		}
+	]
+}
