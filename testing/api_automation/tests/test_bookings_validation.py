@@ -5,6 +5,9 @@ from .conftest import load_test_data
 # Load test data from JSON files
 test_data = load_test_data('bookings_test_data.json')
 
+@pytest.mark.validation
+@pytest.mark.booking
+@pytest.mark.negative
 @pytest.mark.parametrize("test_item", test_data)
 def test_booking_validation_cases(booking_client, test_item):
     """

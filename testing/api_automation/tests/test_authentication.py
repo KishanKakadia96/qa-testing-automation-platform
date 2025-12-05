@@ -2,6 +2,9 @@ import pytest
 from ..configs.config import config
 
 # Tests for authentication functionality of the Booking API
+@pytest.mark.smoke
+@pytest.mark.auth
+@pytest.mark.positive
 def test_valid_login(auth_client):
     """
     Test the login functionality with valid credentials.
@@ -13,6 +16,8 @@ def test_valid_login(auth_client):
     
     print(f"Login successful, received token")
 
+@pytest.mark.auth
+@pytest.mark.negative
 @pytest.mark.parametrize("username, password, test_scenario", [
     ("wronguser", config.PASSWORD, "Invalid Username"),
     (config.USERNAME, "wrongpass", "Invalid Password"),
@@ -27,6 +32,8 @@ def test_invalid_credentials(auth_client, username, password, test_scenario):
     
     print(f"Login failed as expected with invalid credentials")
 
+@pytest.mark.auth
+@pytest.mark.negative
 def test_empty_credentials(auth_client):
     '''
     Test login with empty username and password

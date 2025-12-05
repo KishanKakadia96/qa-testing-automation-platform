@@ -1,6 +1,10 @@
 import pytest
 
 # Functional tests for Booking CRUD operations
+@pytest.mark.smoke
+@pytest.mark.booking
+@pytest.mark.create
+@pytest.mark.positive
 def test_create_booking_valid(booking_client, sample_booking_data):
     """
     Test creating a booking with valid data 
@@ -14,6 +18,10 @@ def test_create_booking_valid(booking_client, sample_booking_data):
 
     print(f"Booking created with ID: {booking_id}")
 
+@pytest.mark.smoke
+@pytest.mark.booking
+@pytest.mark.read
+@pytest.mark.positive
 def test_read_all_bookings(booking_client):
     """
     Test retrieving all bookings
@@ -24,6 +32,9 @@ def test_read_all_bookings(booking_client):
 
     print("All bookings retrieved successfully.")
 
+@pytest.mark.booking
+@pytest.mark.read
+@pytest.mark.positive
 def test_read_booking_by_id(booking_client, sample_booking_data):
     """
     Test retrieving a Booking by ID
@@ -41,6 +52,9 @@ def test_read_booking_by_id(booking_client, sample_booking_data):
 
     print(f"Booking with ID: {booking_id} retrieved successfully.")
 
+@pytest.mark.booking
+@pytest.mark.read
+@pytest.mark.negative
 def test_read_nonexistent_booking(booking_client):
     """
     Test retrieving a Nonexistent Booking
@@ -51,6 +65,9 @@ def test_read_nonexistent_booking(booking_client):
 
     print("Nonexistent booking retrieval correctly returned 404.")
 
+@pytest.mark.booking
+@pytest.mark.update
+@pytest.mark.positive
 def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
     """
     Test updating a Booking with valid data
@@ -74,6 +91,9 @@ def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
 
     print(f"Booking with ID: {booking_id} updated successfully")
 
+@pytest.mark.booking
+@pytest.mark.security
+@pytest.mark.negative
 def test_update_and_delete_booking_invalid_token(booking_client, sample_booking_data):
     """
     Test updating and deleting a Booking with invalid auth token
@@ -93,6 +113,9 @@ def test_update_and_delete_booking_invalid_token(booking_client, sample_booking_
 
     print(f"Booking with ID: {booking_id} update and delete with invalid token correctly returned 403")
 
+@pytest.mark.booking
+@pytest.mark.delete
+@pytest.mark.positive
 def test_delete_booking_valid(booking_client, sample_booking_data, auth_token):
     """
     Test deleting a Booking with valid data

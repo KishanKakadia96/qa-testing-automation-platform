@@ -1,6 +1,8 @@
 import pytest
 
 # Functional tests for security aspects of the Booking API
+@pytest.mark.security
+@pytest.mark.negative
 @pytest.mark.parametrize("operation", ["update", "delete"])
 def test_unauthorized_operations(booking_client, sample_booking_data, operation):
         """
@@ -17,6 +19,8 @@ def test_unauthorized_operations(booking_client, sample_booking_data, operation)
         # Restful Booker allows without token - document limitation
         assert response.status_code == 403
 
+@pytest.mark.security
+@pytest.mark.negative
 @pytest.mark.parametrize("data", [
     {"firstname": "<script>alert('XSS')</script>", "lastname": "Doe"},
     {"firstname": "'; DROP TABLE bookings; --", "lastname": "Doe"}
@@ -30,6 +34,8 @@ def test_xss_sql_injection(booking_client, data):
     response = booking_client.create_booking(malicious_data)
     assert response.status_code == 400  # Expecting rejection of malicious input
 
+@pytest.mark.security
+@pytest.mark.negative
 @pytest.mark.parametrize("data", [
     {"firstname": "%", "lastname": "Doe"},
     {"firstname": "%ohn", "lastname": "Doe"},
