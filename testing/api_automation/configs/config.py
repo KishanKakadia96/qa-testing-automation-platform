@@ -12,4 +12,9 @@ class Config:
     USERNAME = os.environ.get("API_USERNAME")
     PASSWORD = os.environ.get("API_PASSWORD")
 
+    BROWSER = os.environ.get("BROWSER")
+    IMPLICIT_WAIT = int(os.environ.get("IMPLICIT_WAIT"))
+    EXPLICIT_WAIT = int(os.environ.get("EXPLICIT_WAIT"))
+    HEADLESS = os.environ.get("HEADLESS")
+
 config = Config()
