@@ -12,6 +12,7 @@ class Config:
     USERNAME = os.environ.get("API_USERNAME")
     PASSWORD = os.environ.get("API_PASSWORD")
 
+    TEST_URL = os.environ.get("TEST_URL")
     BROWSER = os.environ.get("BROWSER")
     IMPLICIT_WAIT = int(os.environ.get("IMPLICIT_WAIT"))
     EXPLICIT_WAIT = int(os.environ.get("EXPLICIT_WAIT"))
