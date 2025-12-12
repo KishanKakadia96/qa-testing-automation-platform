@@ -1,9 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from webdriver_manager.chrome import ChromeDriverManager
 from testing.api_automation.configs.config import config
 
 
@@ -21,22 +20,22 @@ class DriverFactory:
         
         if browser == "chrome":
             options = ChromeOptions()
-            if config.HEADLESS:
+            if config.HEADLESS == "true":
                 options.add_argument("--headless=new")
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
             options.add_argument("--disable-popup-blocking")
-            options.add_argument("--incognito")
             options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
             
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=options)
+            driver = webdriver.Chrome(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
             return driver
             
         elif browser == "edge":
             options = EdgeOptions()
-            if config.HEADLESS:
+            if config.HEADLESS == "true":
                 options.add_argument("--headless=new")
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
@@ -44,8 +43,7 @@ class DriverFactory:
             options.add_argument("--inprivate")
             options.add_argument("--disable-blink-features=AutomationControlled")
             
-            service = EdgeService()
-            driver = webdriver.Edge(service=service, options=options)
+            driver = webdriver.Edge(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
             return driver
         else:

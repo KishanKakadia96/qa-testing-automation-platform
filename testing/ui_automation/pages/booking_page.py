@@ -31,7 +31,7 @@ class BookingPage(BasePage):
         Navigate to booking page
         """
         from testing.api_automation.configs.config import config
-        self.navigate_to(config.BASE_URL)
+        self.navigate_to(config.TEST_URL)
     
     def fill_firstname(self, firstname):
         """
