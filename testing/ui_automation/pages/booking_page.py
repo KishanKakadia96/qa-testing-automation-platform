@@ -115,3 +115,19 @@ class BookingPage(BasePage):
         self.select_checkin_date(checkin)
         self.select_checkout_date(checkout)
         self.submit_booking()
+    
+    def get_firstname_value(self):
+        """Get firstname field value"""
+        return self.find_element(self.FIRSTNAME_INPUT).get_attribute('value')
+    
+    def get_lastname_value(self):
+        """Get lastname field value"""
+        return self.find_element(self.LASTNAME_INPUT).get_attribute('value')
+    
+    def get_email_value(self):
+        """Get email field value"""
+        return self.find_element(self.EMAIL_INPUT).get_attribute('value')
+    
+    def get_phone_value(self):
+        """Get phone field value"""
+        return self.find_element(self.PHONE_INPUT).get_attribute('value')

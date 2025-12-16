@@ -1,0 +1,62 @@
+[
+    {
+        "test_id": "DD_001",
+        "firstname": "Alice",
+        "lastname": "Smith",
+        "email": "alice.smith@example.com",
+        "phone": "9876543210",
+        "checkin": "2025-12-20",
+        "checkout": "2025-12-25",
+        "expected_result": "success"
+    },
+    {
+        "test_id": "DD_002",
+        "firstname": "Bob",
+        "lastname": "Johnson",
+        "email": "bob.johnson@example.com",
+        "phone": "5551234567",
+        "checkin": "2026-01-10",
+        "checkout": "2026-01-15",
+        "expected_result": "success"
+    },
+    {
+        "test_id": "DD_003",
+        "firstname": "Charlie",
+        "lastname": "Brown",
+        "email": "charlie.brown@example.com",
+        "phone": "4449876543",
+        "checkin": "2026-02-01",
+        "checkout": "2026-02-05",
+        "expected_result": "success"
+    },
+    {
+        "test_id": "DD_004",
+        "firstname": "",
+        "lastname": "Wilson",
+        "email": "wilson@example.com",
+        "phone": "1112223333",
+        "checkin": "2025-12-15",
+        "checkout": "2025-12-18",
+        "expected_result": "failure"
+    },
+    {
+        "test_id": "DD_005",
+        "firstname": "David",
+        "lastname": "",
+        "email": "david@example.com",
+        "phone": "9998887777",
+        "checkin": "2025-12-22",
+        "checkout": "2025-12-26",
+        "expected_result": "failure"
+    },
+    {
+        "test_id": "DD_006",
+        "firstname": "Emma",
+        "lastname": "Davis",
+        "email": "invalid-email",
+        "phone": "6665554444",
+        "checkin": "2026-01-05",
+        "checkout": "2026-01-08",
+        "expected_result": "failure"
+    }
+]
