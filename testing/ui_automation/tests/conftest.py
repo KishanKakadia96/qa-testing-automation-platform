@@ -8,11 +8,24 @@ from drivers.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.booking_page import BookingPage
 
+def pytest_addoption(parser):
+    """
+    Add custom command line options for pytest
+    """
+    parser.addoption(
+        "--browser",
+        action="store",
+        default="chrome",
+        help="Browser to run tests: chrome, firefox, edge"
+    )
+
 @pytest.fixture(scope="function")
 def driver(request):
     """
     Create and quit WebDriver for each test
     """
+    browser = request.config.getoption("--browser")
+    os.environ["BROWSER"] = browser
     driver = DriverFactory.create_driver()
     driver.maximize_window()
     yield driver

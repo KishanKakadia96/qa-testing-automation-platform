@@ -206,5 +206,4 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# UI automation testing screenshots
-testing/ui_automation/reports/screenshots
+.github/workflows/.secrets
