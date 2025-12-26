@@ -14,8 +14,8 @@ class Config:
 
     TEST_URL = os.environ.get("TEST_URL")
     BROWSER = os.environ.get("BROWSER")
-    IMPLICIT_WAIT = int(os.environ.get("IMPLICIT_WAIT"))
-    EXPLICIT_WAIT = int(os.environ.get("EXPLICIT_WAIT"))
+    IMPLICIT_WAIT = os.environ.get("IMPLICIT_WAIT")
+    EXPLICIT_WAIT = os.environ.get("EXPLICIT_WAIT")
     HEADLESS = os.environ.get("HEADLESS")
 
 config = Config()

@@ -3,7 +3,7 @@ import requests
 class BaseAPIClient:
     """A base API client to handle HTTP requests."""
     def __init__(self, base_url):
-        self.base_url = base_url.rstrip('/')
+        self.base_url = base_url
 
     def get(self, endpoint, params=None, headers=None, cookies=None):
         return requests.get(f"{self.base_url}{endpoint}", params=params, headers=headers, cookies=cookies)

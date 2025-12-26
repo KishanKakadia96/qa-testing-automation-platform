@@ -31,8 +31,10 @@ jobs:
 
       - name: Run API tests
         env:
-          API_USERNAME: ${{ secrets.API_USERNAME }}
-          API_PASSWORD: ${{ secrets.API_PASSWORD }}
+          path: testing/api_automation/.env
+          BASE_URL: ${{ env.BASE_URL }}
+          API_USERNAME: ${{ env.API_USERNAME }}
+          API_PASSWORD: ${{ env.API_PASSWORD }}
         working-directory: testing/api_automation
         run: |
           pytest tests/ \
@@ -80,11 +82,11 @@ jobs:
         run: |
           pytest tests/ \
             --browser=chrome \
-            --html=reports/ui_test_report.html \
+            --html=testing/ui_automation/reports/ui_test_report.html \
             --self-contained-html \
             -v \
             --tb=short \
-            --junitxml=reports/junit.xml \
+            --junitxml=testing/ui_automation/reports/junit.xml \
             -m "not edge"
 
       - name: Upload UI test report

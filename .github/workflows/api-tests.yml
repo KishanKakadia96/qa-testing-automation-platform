@@ -28,8 +28,10 @@ jobs:
 
       - name: Run API tests
         env:
-          API_USERNAME: ${{ secrets.API_USERNAME }}
-          API_PASSWORD: ${{ secrets.API_PASSWORD }}
+          path: testing/api_automation/.env
+          BASE_URL: ${{ env.BASE_URL }}
+          API_USERNAME: ${{ env.API_USERNAME }}
+          API_PASSWORD: ${{ env.API_PASSWORD }}
         working-directory: testing/api_automation
         run: |
           pytest tests/ \
