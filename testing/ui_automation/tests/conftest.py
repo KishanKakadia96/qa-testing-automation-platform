@@ -7,6 +7,7 @@ from datetime import datetime
 from drivers.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.booking_page import BookingPage
+from testing.api_automation.configs.config import config
 
 def pytest_addoption(parser):
     """
@@ -26,9 +27,12 @@ def driver(request):
     """
     browser = request.config.getoption("--browser")
     os.environ["BROWSER"] = browser
-    driver = DriverFactory.create_driver()
+    driver = DriverFactory.create_driver(browser=browser)
     driver.maximize_window()
     yield driver
+
+    current_url = config.TEST_URL
+    print(f"\nCurrent URL at teardown: {current_url}")
     
     # Take screenshot on failure
     if request.node.rep_call.failed:
@@ -78,8 +82,8 @@ def sample_booking_data():
         "lastname": "Doe",
         "email": "john.doe@example.com",
         "phone": "1234567890",
-        "checkin": "2025-12-15",
-        "checkout": "2025-12-20"
+        "checkin": "2025-12-28",
+        "checkout": "2025-12-29"
     }
 
 @pytest.fixture(scope="function")

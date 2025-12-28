@@ -3,6 +3,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from pages.booking_page import BookingPage
 from pages.home_page import HomePage
 
@@ -44,7 +45,6 @@ class TestAdvancedScenarios:
     
     def test_form_field_tab_navigation(self, driver):
         """Test tab navigation between form fields"""
-        from selenium.webdriver.common.keys import Keys
         
         page = BookingPage(driver)
         page.open_booking_page()

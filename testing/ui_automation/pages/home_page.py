@@ -1,3 +1,4 @@
+from testing.api_automation.configs.config import config
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
@@ -25,8 +26,7 @@ class HomePage(BasePage):
         """
         Navigate to home page
         """
-        from testing.api_automation.configs.config import config
-        self.navigate_to(config.BASE_URL)
+        self.navigate_to(config.TEST_URL)
     
     def is_home_page_loaded(self):
         """

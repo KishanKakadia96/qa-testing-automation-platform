@@ -13,6 +13,9 @@ class Config:
     PASSWORD = os.environ.get("API_PASSWORD")
 
     TEST_URL = os.environ.get("TEST_URL")
+    SINGLE_ROOM_BOOK_LINK = os.environ.get("SINGLE_ROOM_BOOK_LINK")
+    DOUBLE_ROOM_BOOK_LINK = os.environ.get("DOUBLE_ROOM_BOOK_LINK")
+    SUITE_ROOM_BOOK_LINK = os.environ.get("SUITE_ROOM_BOOK_LINK")
     BROWSER = os.environ.get("BROWSER")
     IMPLICIT_WAIT = os.environ.get("IMPLICIT_WAIT")
     EXPLICIT_WAIT = os.environ.get("EXPLICIT_WAIT")

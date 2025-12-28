@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -34,13 +35,17 @@ class BasePage:
     
     def click_element(self, locator):
         """
-        Click element with explicit wait
+        Click element with explicit wait, uses JavaScript click as fallback
         """
         try:
             element = self.wait.until(EC.element_to_be_clickable(locator))
             element.click()
-        except TimeoutException:
-            raise
+        except Exception as e:
+            try:
+                element = self.find_element(locator)
+                self.driver.execute_script("arguments[0].click();", element)
+            except:
+                raise e
     
     def send_keys(self, locator, text):
         """
@@ -75,6 +80,14 @@ class BasePage:
             return True
         except TimeoutException:
             return False
+    
+    def scroll_to_element(self, locator):
+        """
+        Scroll to element with offset to avoid fixed headers
+        """
+        element = self.find_element(locator)
+        self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element)
+        time.sleep(0.5)  # Wait for scroll animation to complete
     
     def navigate_to(self, url):
         """

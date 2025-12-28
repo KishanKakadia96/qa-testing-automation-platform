@@ -1,3 +1,4 @@
+from testing.api_automation.configs.config import config
 import pytest
 
 @pytest.mark.smoke
@@ -64,7 +65,11 @@ class TestBookingUIValidation:
         """
         TC007: Verify error when submitting empty form
         """
-        booking_page.submit_booking()
+        # Navigate to room and open form first
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
+        # Try to submit without filling form
+        booking_page.click_submit_reservation()
         # Add validation check when error handling is available
         print(" Empty form submission test executed")
     
@@ -93,8 +98,7 @@ class TestNavigation:
         """
         TC010: Verify page has title
         """
-        from testing.api_automation.configs.config import config
-        driver.get(config.BASE_URL)
+        driver.get(config.TEST_URL)
         title = driver.title
         assert title is not None
         print(f" Page title: {title}")
@@ -103,7 +107,6 @@ class TestNavigation:
         """
         TC011: Verify correct URL is loaded
         """
-        from testing.api_automation.configs.config import config
         current_url = booking_page.driver.current_url
-        assert config.BASE_URL in current_url
+        assert config.TEST_URL in current_url
         print(f" Current URL: {current_url}")

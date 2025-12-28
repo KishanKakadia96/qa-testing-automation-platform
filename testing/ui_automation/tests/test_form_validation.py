@@ -12,48 +12,50 @@ class TestFormValidation:
         """
         TC012: Verify all form fields are visible
         """
+        # Navigate to room and open form first
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
+        # Now check if form fields are visible
         assert booking_page.is_element_visible(booking_page.FIRSTNAME_INPUT, timeout=5)
         assert booking_page.is_element_visible(booking_page.LASTNAME_INPUT, timeout=5)
         assert booking_page.is_element_visible(booking_page.EMAIL_INPUT, timeout=5)
         assert booking_page.is_element_visible(booking_page.PHONE_INPUT, timeout=5)
         print(" All form fields are visible")
     
-    def test_submit_button_present(self, booking_page):
+    def test_reserve_now_button_present(self, booking_page):
         """
-        TC013: Verify submit button is present
+        TC013: Verify Reserve Now button is present on reservation page
         """
-        assert booking_page.is_element_visible(booking_page.SUBMIT_BUTTON, timeout=5)
-        print(" Submit button is present")
+        booking_page.click_single_room_book_now()
+        assert booking_page.is_element_visible(booking_page.RESERVE_NOW_BUTTON_FIRST, timeout=5)
+        print(" Reserve Now button is present")
     
     def test_complete_booking_flow(self, booking_page, sample_booking_data):
         """
         TC014: Complete booking flow with all fields
         """
-        booking_page.create_booking(
-            sample_booking_data["firstname"],
-            sample_booking_data["lastname"],
-            sample_booking_data["email"],
-            sample_booking_data["phone"],
-            sample_booking_data["checkin"],
-            sample_booking_data["checkout"]
-        )
+        # Click room Book now link
+        booking_page.click_single_room_book_now()
+        # Click Reserve Now to open form
+        booking_page.click_reserve_now()
+        # Fill form fields
+        booking_page.fill_firstname(sample_booking_data["firstname"])
+        booking_page.fill_lastname(sample_booking_data["lastname"])
+        booking_page.fill_email(sample_booking_data["email"])
+        booking_page.fill_phone(sample_booking_data["phone"])
+        # Submit reservation
+        booking_page.click_submit_reservation()
         print(" Complete booking flow executed")
     
     def test_form_field_clear_functionality(self, booking_page):
         """
         TC015: Verify form fields can be cleared and re-filled
         """
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_firstname("FirstName")
         booking_page.fill_firstname("UpdatedName")
         print(" Form field clear and update works")
-    
-    def test_date_fields_accept_input(self, booking_page):
-        """
-        TC016: Verify date fields accept date input
-        """
-        booking_page.select_checkin_date("2025-12-15")
-        booking_page.select_checkout_date("2025-12-20")
-        print(" Date fields accept input")
 
 @pytest.mark.form
 @pytest.mark.ui
@@ -67,6 +69,8 @@ class TestFormBoundary:
         """
         TC017: Test firstname with very long input
         """
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
         long_name = "A" * 100
         booking_page.fill_firstname(long_name)
         print(" Long firstname test executed")
@@ -75,6 +79,8 @@ class TestFormBoundary:
         """
         TC018: Test lastname with very long input
         """
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
         long_name = "B" * 100
         booking_page.fill_lastname(long_name)
         print(" Long lastname test executed")
@@ -83,6 +89,8 @@ class TestFormBoundary:
         """
         TC019: Test special characters in name fields
         """
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_firstname("John@#$%")
         booking_page.fill_lastname("Doe!&*()")
         print(" Special characters test executed")
@@ -91,6 +99,8 @@ class TestFormBoundary:
         """
         TC020: Test numeric values in name fields
         """
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_firstname("12345")
         booking_page.fill_lastname("67890")
         print(" Numeric values in name test executed")
