@@ -1,8 +1,6 @@
 import pytest
 from drivers.driver_factory import DriverFactory
 from pages.home_page import HomePage
-from pages.booking_page import BookingPage
-
 
 @pytest.mark.cross_browser
 class TestCrossBrowser:
@@ -23,22 +21,22 @@ class TestCrossBrowser:
         assert page.is_home_page_loaded(), "Home page did not load"
         assert page.get_site_title() != "", "Site title is empty"
     
-    def test_booking_page_loads_all_browsers(self, cross_browser_driver):
+    def test_booking_page_loads_all_browsers(self, booking_page):
         """Test booking page loads in all browsers"""
-        page = BookingPage(cross_browser_driver)
-        page.open_booking_page()
-        assert page.is_firstname_visible(), "Firstname field not visible"
-        assert page.is_submit_button_visible(), "Submit button not visible"
+        booking_page.open_booking_page()
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
+        assert booking_page.is_firstname_visible(), "Firstname field not visible"
+        assert booking_page.is_reserve_now_button_visible(), "reserve now button not visible"
     
-    def test_booking_form_all_browsers(self, cross_browser_driver):
+    def test_booking_form_all_browsers(self, booking_page):
         """Test booking form functionality in all browsers"""
-        page = BookingPage(cross_browser_driver)
-        page.open_booking_page()
+        booking_page.click_single_room_book_now()
+        booking_page.click_reserve_now()
+        booking_page.fill_firstname("John")
+        booking_page.fill_lastname("Doe")
+        booking_page.fill_email("john@example.com")
+        booking_page.fill_phone("1234567890")
         
-        page.fill_firstname("John")
-        page.fill_lastname("Doe")
-        page.fill_email("john@example.com")
-        page.fill_phone("1234567890")
-        
-        assert page.get_firstname_value() == "John"
-        assert page.get_lastname_value() == "Doe"
+        assert booking_page.get_firstname_value() == "John"
+        assert booking_page.get_lastname_value() == "Doe"

@@ -139,6 +139,18 @@ class BookingPage(BasePage):
         Get error message text"""
         return self.get_element_text(self.ERROR_MESSAGE)
     
+    def is_firstname_visible(self):
+        """
+        Check if firstname input is visible
+        """
+        return self.is_element_visible(self.FIRSTNAME_INPUT, timeout=5)
+    
+    def is_reserve_now_button_visible(self):
+        """
+        Check if Reserve Now submit button is visible
+        """
+        return self.is_element_visible(self.RESERVE_NOW_BUTTON_SUBMIT, timeout=5)
+    
     def get_firstname_value(self):
         """Get firstname field value"""
         return self.find_element(self.FIRSTNAME_INPUT).get_attribute('value')

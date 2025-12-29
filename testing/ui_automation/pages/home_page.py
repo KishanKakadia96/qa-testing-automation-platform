@@ -32,7 +32,7 @@ class HomePage(BasePage):
         """
         Verify home page is loaded
         """
-        return self.is_element_visible(self.LOGO, timeout=10)
+        return self.is_element_visible(self.ROOM_CARDS, timeout=10)
     
     def get_site_title(self):
         """
