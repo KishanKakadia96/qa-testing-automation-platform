@@ -1,6 +1,8 @@
 from testing.api_automation.configs.config import config
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
+import time
 
 class HomePage(BasePage):
     """
@@ -27,12 +29,14 @@ class HomePage(BasePage):
         Navigate to home page
         """
         self.navigate_to(config.TEST_URL)
+        # Wait for page to be fully loaded
+        time.sleep(0.5)
     
     def is_home_page_loaded(self):
         """
         Verify home page is loaded
         """
-        return self.is_element_visible(self.ROOM_CARDS, timeout=10)
+        return self.is_element_visible(self.ROOM_CARDS, timeout=15)
     
     def get_site_title(self):
         """

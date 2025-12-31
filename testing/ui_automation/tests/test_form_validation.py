@@ -13,7 +13,7 @@ class TestFormValidation:
         TC012: Verify all form fields are visible
         """
         # Navigate to room and open form first
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         # Now check if form fields are visible
         assert booking_page.is_element_visible(booking_page.FIRSTNAME_INPUT, timeout=5)
@@ -26,7 +26,7 @@ class TestFormValidation:
         """
         TC013: Verify Reserve Now button is present on reservation page
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         assert booking_page.is_element_visible(booking_page.RESERVE_NOW_BUTTON_FIRST, timeout=5)
         print(" Reserve Now button is present")
     
@@ -35,7 +35,7 @@ class TestFormValidation:
         TC014: Complete booking flow with all fields
         """
         # Click room Book now link
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         # Click Reserve Now to open form
         booking_page.click_reserve_now()
         # Fill form fields
@@ -51,7 +51,7 @@ class TestFormValidation:
         """
         TC015: Verify form fields can be cleared and re-filled
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname("FirstName")
         booking_page.fill_firstname("UpdatedName")
@@ -69,7 +69,7 @@ class TestFormBoundary:
         """
         TC017: Test firstname with very long input
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         long_name = "A" * 100
         booking_page.fill_firstname(long_name)
@@ -79,7 +79,7 @@ class TestFormBoundary:
         """
         TC018: Test lastname with very long input
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         long_name = "B" * 100
         booking_page.fill_lastname(long_name)
@@ -89,7 +89,7 @@ class TestFormBoundary:
         """
         TC019: Test special characters in name fields
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname("John@#$%")
         booking_page.fill_lastname("Doe!&*()")
@@ -99,7 +99,7 @@ class TestFormBoundary:
         """
         TC020: Test numeric values in name fields
         """
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname("12345")
         booking_page.fill_lastname("67890")

@@ -24,14 +24,14 @@ class TestCrossBrowser:
     def test_booking_page_loads_all_browsers(self, booking_page):
         """Test booking page loads in all browsers"""
         booking_page.open_booking_page()
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         assert booking_page.is_firstname_visible(), "Firstname field not visible"
         assert booking_page.is_reserve_now_button_visible(), "reserve now button not visible"
     
     def test_booking_form_all_browsers(self, booking_page):
         """Test booking form functionality in all browsers"""
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname("John")
         booking_page.fill_lastname("Doe")

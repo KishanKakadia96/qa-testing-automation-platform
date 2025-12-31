@@ -57,26 +57,22 @@ class BookingPage(BasePage):
         """
         self.send_keys(self.CHECKOUT_DATE, date)
     
-    def click_single_room_book_now(self):
+    def click_room_book_now(self, room_type="single"):
         """
-        Click 'Book now' link for Single room
+        Click specified room type
         """
-        self.scroll_to_element(self.SINGLE_ROOM_BOOK_LINK)
-        self.click_element(self.SINGLE_ROOM_BOOK_LINK)
-    
-    def click_double_room_book_now(self):
-        """
-        Click 'Book now' link for Double room
-        """
-        self.scroll_to_element(self.DOUBLE_ROOM_BOOK_LINK)
-        self.click_element(self.DOUBLE_ROOM_BOOK_LINK)
-    
-    def click_suite_room_book_now(self):
-        """
-        Click 'Book now' link for Suite room
-        """
-        self.scroll_to_element(self.SUITE_ROOM_BOOK_LINK)
-        self.click_element(self.SUITE_ROOM_BOOK_LINK)
+        room_locators = {
+            "single": self.SINGLE_ROOM_BOOK_LINK,
+            "double": self.DOUBLE_ROOM_BOOK_LINK,
+            "suite": self.SUITE_ROOM_BOOK_LINK
+        }
+        
+        if room_type.lower() not in room_locators:
+            raise ValueError(f"Invalid room type: {room_type}. Must be 'single', 'double', or 'suite'")
+        
+        locator = room_locators[room_type.lower()]
+        self.scroll_to_element(locator)
+        self.click_element(locator)
     
     def click_reserve_now(self):
         """

@@ -20,6 +20,8 @@ class TestBookingUI:
         """
         TC002: Verify booking form can be filled with valid data
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_firstname(sample_booking_data["firstname"])
         booking_page.fill_lastname(sample_booking_data["lastname"])
         booking_page.fill_email(sample_booking_data["email"])
@@ -30,6 +32,8 @@ class TestBookingUI:
         """
         TC003: Verify firstname field accepts text input
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_firstname("John")
         print(" Firstname field accepts input")
     
@@ -37,6 +41,8 @@ class TestBookingUI:
         """
         TC004: Verify lastname field accepts text input
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_lastname("Doe")
         print(" Lastname field accepts input")
     
@@ -44,6 +50,8 @@ class TestBookingUI:
         """
         TC005: Verify email field accepts email input
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_email("test@example.com")
         print(" Email field accepts input")
     
@@ -51,8 +59,20 @@ class TestBookingUI:
         """
         TC006: Verify phone field accepts numeric input
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_phone("1234567890")
         print(" Phone field accepts input")
+    
+    @pytest.mark.parametrize("room_type", ["single", "double", "suite"])
+    def test_all_room_types_can_be_selected(self, booking_page, room_type):
+        """
+        TC006a: Verify all room types can be selected
+        """
+        booking_page.click_room_book_now(room_type)
+        booking_page.click_reserve_now()
+        assert booking_page.is_firstname_visible(), f"{room_type.capitalize()} room booking form did not load"
+        print(f" {room_type.capitalize()} room selected successfully")
 
 @pytest.mark.negative
 @pytest.mark.ui
@@ -66,7 +86,7 @@ class TestBookingUIValidation:
         TC007: Verify error when submitting empty form
         """
         # Navigate to room and open form first
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         # Try to submit without filling form
         booking_page.click_submit_reservation()
@@ -77,6 +97,8 @@ class TestBookingUIValidation:
         """
         TC008: Verify validation for invalid email
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_email("invalid-email")
         print(" Invalid email test executed")
     
@@ -84,6 +106,8 @@ class TestBookingUIValidation:
         """
         TC009: Verify validation for invalid phone
         """
+        booking_page.click_room_book_now()
+        booking_page.click_reserve_now()
         booking_page.fill_phone("abc123")
         print(" Invalid phone test executed")
 

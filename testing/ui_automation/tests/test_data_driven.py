@@ -16,7 +16,7 @@ class TestDataDriven:
     def test_booking_with_multiple_datasets(self, test_data, booking_page):
         """Test booking form with multiple test data sets"""
         # Fill form with test data
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname(test_data['firstname'])
         booking_page.fill_lastname(test_data['lastname'])
@@ -37,7 +37,7 @@ class TestDataDriven:
     ])
     def test_name_fields_validation(self, firstname, lastname, email, expected, booking_page):
         """Test name field validation with inline data"""
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname(firstname)
         booking_page.fill_lastname(lastname)
@@ -61,7 +61,7 @@ class TestDataDriven:
     ])
     def test_valid_email_formats(self, email, booking_page):
         """Test various valid email formats"""
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_email(email)
         assert booking_page.get_email_value() == email
@@ -73,7 +73,7 @@ class TestDataDriven:
     ])
     def test_valid_phone_formats(self, driver, phone, booking_page):
         """Test various valid phone formats"""
-        booking_page.click_single_room_book_now()
+        booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_phone(phone)
         assert booking_page.get_phone_value() == phone

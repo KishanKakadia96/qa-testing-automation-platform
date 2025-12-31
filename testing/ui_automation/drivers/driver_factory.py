@@ -42,9 +42,16 @@ class DriverFactory:
             options.add_argument("--disable-popup-blocking")
             options.add_argument("--inprivate")
             options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            # Set page load strategy for better stability
+            options.page_load_strategy = 'normal'
             
             driver = webdriver.Edge(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
+            # Set explicit page load timeout
+            driver.set_page_load_timeout(30)
             return driver
         else:
             raise ValueError(f"Unsupported browser: {browser}")
