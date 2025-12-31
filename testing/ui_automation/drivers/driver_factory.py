@@ -1,9 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from testing.api_automation.configs.config import config
+import os
 
 
 class DriverFactory:
@@ -17,10 +16,13 @@ class DriverFactory:
         Create and return WebDriver instance
         """
         browser = browser or config.BROWSER
+        # Auto-enable headless mode in CI environment
+        is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+        is_headless = config.HEADLESS == "true" or is_ci
         
         if browser == "chrome":
             options = ChromeOptions()
-            if config.HEADLESS == "true":
+            if is_headless:
                 options.add_argument("--headless=new")
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
@@ -28,6 +30,8 @@ class DriverFactory:
             options.add_argument("--disable-blink-features=AutomationControlled")
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--window-size=1920,1080")
             
             driver = webdriver.Chrome(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
@@ -35,7 +39,7 @@ class DriverFactory:
             
         elif browser == "edge":
             options = EdgeOptions()
-            if config.HEADLESS == "true":
+            if is_headless:
                 options.add_argument("--headless=new")
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
@@ -45,12 +49,11 @@ class DriverFactory:
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--disable-gpu")
-            # Set page load strategy for better stability
+            options.add_argument("--window-size=1920,1080")
             options.page_load_strategy = 'normal'
             
             driver = webdriver.Edge(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
-            # Set explicit page load timeout
             driver.set_page_load_timeout(30)
             return driver
         else:
