@@ -28,7 +28,7 @@ jobs:
 
       - name: Run API tests
         env:
-          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_URL: ${{ secrets.TEST_URL }}
           API_USERNAME: ${{ secrets.API_USERNAME }}
           API_PASSWORD: ${{ secrets.API_PASSWORD }}
           AUTH_ENDPOINT: ${{ secrets.AUTH_ENDPOINT }}
