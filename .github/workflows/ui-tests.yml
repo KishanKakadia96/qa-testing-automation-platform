@@ -31,6 +31,25 @@ jobs:
         with:
           chrome-version: stable
 
+      - name: Create .env file from secrets
+        working-directory: testing/api_automation
+        run: |
+          cat << EOF > .env
+          BASE_URL="${{ secrets.BASE_URL }}"
+          AUTH_ENDPOINT="${{ secrets.AUTH_ENDPOINT }}"
+          BOOKING_ENDPOINT="${{ secrets.BOOKING_ENDPOINT }}"
+          API_USERNAME="${{ secrets.API_USERNAME }}"
+          API_PASSWORD="${{ secrets.API_PASSWORD }}"
+          TEST_URL="${{ secrets.TEST_URL }}"
+          SINGLE_ROOM_BOOK_LINK="${{ secrets.SINGLE_ROOM_BOOK_LINK }}"
+          DOUBLE_ROOM_BOOK_LINK="${{ secrets.DOUBLE_ROOM_BOOK_LINK }}"
+          SUITE_ROOM_BOOK_LINK="${{ secrets.SUITE_ROOM_BOOK_LINK }}"
+          BROWSER="${{ secrets.BROWSER }}"
+          IMPLICIT_WAIT="${{ secrets.IMPLICIT_WAIT }}"
+          EXPLICIT_WAIT="${{ secrets.EXPLICIT_WAIT }}"
+          HEADLESS="${{ secrets.HEADLESS }}"
+          EOF
+
       - name: Run UI tests (Chrome)
         working-directory: testing/ui_automation
         run: |
