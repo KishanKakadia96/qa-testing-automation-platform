@@ -35,7 +35,7 @@ def driver(request):
     print(f"\nCurrent URL at teardown: {current_url}")
     
     # Take screenshot on failure
-    if request.node.rep_call.failed:
+    if hasattr(request.node, 'rep_call') and request.node.rep_call.failed:
         screenshot_dir = os.path.join(os.path.dirname(__file__), '../reports/screenshots')
         os.makedirs(screenshot_dir, exist_ok=True)
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
