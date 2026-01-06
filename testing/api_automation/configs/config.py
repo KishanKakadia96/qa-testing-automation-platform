@@ -17,8 +17,8 @@ class Config:
     DOUBLE_ROOM_BOOK_LINK = os.environ.get("DOUBLE_ROOM_BOOK_LINK")
     SUITE_ROOM_BOOK_LINK = os.environ.get("SUITE_ROOM_BOOK_LINK")
     BROWSER = os.environ.get("BROWSER")
-    IMPLICIT_WAIT = os.environ.get("IMPLICIT_WAIT")
-    EXPLICIT_WAIT = os.environ.get("EXPLICIT_WAIT")
+    IMPLICIT_WAIT = int(os.environ.get("IMPLICIT_WAIT"))
+    EXPLICIT_WAIT = int(os.environ.get("EXPLICIT_WAIT"))
     HEADLESS = os.environ.get("HEADLESS")
 
 config = Config()
