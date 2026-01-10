@@ -93,4 +93,7 @@ class BasePage:
         """
         Navigate to URL
         """
+        # Ensure URL has protocol
+        if url and not url.startswith(('http://', 'https://')):
+            url = f'https://{url}'
         self.driver.get(url)
