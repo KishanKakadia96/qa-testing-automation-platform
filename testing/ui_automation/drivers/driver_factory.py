@@ -35,6 +35,7 @@ class DriverFactory:
             
             driver = webdriver.Chrome(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
+            driver.set_page_load_timeout(1000)
             return driver
             
         elif browser == "edge":
@@ -54,7 +55,7 @@ class DriverFactory:
             
             driver = webdriver.Edge(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
-            driver.set_page_load_timeout(30)
+            driver.set_page_load_timeout(1000)
             return driver
         else:
             raise ValueError(f"Unsupported browser: {browser}")

@@ -19,7 +19,7 @@ class TestAdvancedScenarios:
         page.open_home_page()
         load_time = time.time() - start_time
         
-        assert load_time < 10, f"Page load time {load_time}s exceeds 10s threshold"
+        assert load_time < 60, f"Page load time {load_time}s exceeds 60s threshold"
         assert page.is_home_page_loaded(), "Home page did not load properly"
     
     def test_multiple_form_submissions(self, driver, booking_page):

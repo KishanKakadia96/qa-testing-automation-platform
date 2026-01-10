@@ -31,7 +31,7 @@ def driver(request):
     driver.maximize_window()
     yield driver
 
-    current_url = config.TEST_URL
+    current_url = driver.current_url
     print(f"\nCurrent URL at teardown: {current_url}")
     
     # Take screenshot on failure

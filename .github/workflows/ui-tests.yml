@@ -32,9 +32,8 @@ jobs:
           chrome-version: stable
 
       - name: Create .env file from secrets
-        working-directory: testing/api_automation
         run: |
-          cat << EOF > .env
+          cat << EOF > testing/api_automation/.env
           BASE_URL="${{ secrets.BASE_URL }}"
           AUTH_ENDPOINT="${{ secrets.AUTH_ENDPOINT }}"
           BOOKING_ENDPOINT="${{ secrets.BOOKING_ENDPOINT }}"
