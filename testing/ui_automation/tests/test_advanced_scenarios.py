@@ -51,8 +51,10 @@ class TestAdvancedScenarios:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         
-        # Focus on firstname field
+        # Focus on firstname field - scroll into view first
         firstname_field = booking_page.find_element(booking_page.FIRSTNAME_INPUT)
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", firstname_field)
+        time.sleep(0.5)
         firstname_field.click()
         firstname_field.send_keys("John")
         
@@ -163,6 +165,11 @@ class TestEdgeCases:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         
+        # Scroll to firstname field
+        firstname_field = booking_page.find_element(booking_page.FIRSTNAME_INPUT)
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", firstname_field)
+        time.sleep(0.3)
+        
         # Rapidly update firstname field
         names = ["A", "AB", "ABC", "ABCD", "ABCDE"]
         for name in names:
@@ -177,6 +184,11 @@ class TestEdgeCases:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         
+        # Scroll to firstname field
+        firstname_field = booking_page.find_element(booking_page.FIRSTNAME_INPUT)
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", firstname_field)
+        time.sleep(0.3)
+        
         special_chars = "Test@#$%"
         booking_page.fill_firstname(special_chars)
         
@@ -190,6 +202,11 @@ class TestEdgeCases:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         
+        # Scroll to firstname field
+        firstname_field = booking_page.find_element(booking_page.FIRSTNAME_INPUT)
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", firstname_field)
+        time.sleep(0.3)
+        
         unicode_name = "José María"
         booking_page.fill_firstname(unicode_name)
         
@@ -201,6 +218,11 @@ class TestEdgeCases:
         booking_page.open_booking_page()
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
+        
+        # Scroll to firstname field
+        firstname_field = booking_page.find_element(booking_page.FIRSTNAME_INPUT)
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", firstname_field)
+        time.sleep(0.3)
         
         long_string = "A" * 200
         booking_page.fill_firstname(long_string)
