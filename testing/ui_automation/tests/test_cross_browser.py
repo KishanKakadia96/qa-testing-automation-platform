@@ -1,6 +1,9 @@
 import pytest
+import logging
 from drivers.driver_factory import DriverFactory
 from pages.home_page import HomePage
+
+logger = logging.getLogger(__name__)
 
 @pytest.mark.cross_browser
 class TestCrossBrowser:

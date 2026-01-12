@@ -1,5 +1,8 @@
 from testing.api_automation.configs.config import config
 import pytest
+import logging
+
+logger = logging.getLogger(__name__)
 
 @pytest.mark.smoke
 @pytest.mark.ui
@@ -14,7 +17,7 @@ class TestBookingUI:
         TC001: Verify booking page loads successfully
         """
         assert booking_page.driver.current_url is not None
-        print(" Booking page loaded successfully")
+        logger.info("Booking page loaded successfully")
     
     def test_fill_booking_form_valid_data(self, booking_page, sample_booking_data):
         """
@@ -26,7 +29,7 @@ class TestBookingUI:
         booking_page.fill_lastname(sample_booking_data["lastname"])
         booking_page.fill_email(sample_booking_data["email"])
         booking_page.fill_phone(sample_booking_data["phone"])
-        print(" All form fields filled successfully")
+        logger.info("All form fields filled successfully")
     
     def test_firstname_field_accepts_input(self, booking_page):
         """
@@ -35,7 +38,7 @@ class TestBookingUI:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_firstname("John")
-        print(" Firstname field accepts input")
+        logger.info("Firstname field accepts input")
     
     def test_lastname_field_accepts_input(self, booking_page):
         """
@@ -44,7 +47,7 @@ class TestBookingUI:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_lastname("Doe")
-        print(" Lastname field accepts input")
+        logger.info("Lastname field accepts input")
     
     def test_email_field_accepts_input(self, booking_page):
         """
@@ -53,7 +56,7 @@ class TestBookingUI:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_email("test@example.com")
-        print(" Email field accepts input")
+        logger.info("Email field accepts input")
     
     def test_phone_field_accepts_input(self, booking_page):
         """
@@ -62,7 +65,7 @@ class TestBookingUI:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_phone("1234567890")
-        print(" Phone field accepts input")
+        logger.info("Phone field accepts input")
     
     @pytest.mark.parametrize("room_type", ["single", "double", "suite"])
     def test_all_room_types_can_be_selected(self, booking_page, room_type):
@@ -72,7 +75,7 @@ class TestBookingUI:
         booking_page.click_room_book_now(room_type)
         booking_page.click_reserve_now()
         assert booking_page.is_firstname_visible(), f"{room_type.capitalize()} room booking form did not load"
-        print(f" {room_type.capitalize()} room selected successfully")
+        logger.info(f"{room_type.capitalize()} room selected successfully")
 
 @pytest.mark.negative
 @pytest.mark.ui
@@ -91,7 +94,7 @@ class TestBookingUIValidation:
         # Try to submit without filling form
         booking_page.click_submit_reservation()
         # Add validation check when error handling is available
-        print(" Empty form submission test executed")
+        logger.info("Empty form submission test executed")
     
     def test_invalid_email_format(self, booking_page):
         """
@@ -100,7 +103,7 @@ class TestBookingUIValidation:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_email("invalid-email")
-        print(" Invalid email test executed")
+        logger.info("Invalid email test executed")
     
     def test_invalid_phone_format(self, booking_page):
         """
@@ -109,7 +112,7 @@ class TestBookingUIValidation:
         booking_page.click_room_book_now()
         booking_page.click_reserve_now()
         booking_page.fill_phone("abc123")
-        print(" Invalid phone test executed")
+        logger.info("Invalid phone test executed")
 
 @pytest.mark.ui
 @pytest.mark.navigation
@@ -122,10 +125,11 @@ class TestNavigation:
         """
         TC010: Verify page has title
         """
-        driver.get(config.TEST_URL)
+        driver.current_url
+        logger.info(f"Navigated to booking page for title check: {driver.current_url}")
         title = driver.title
         assert title is not None
-        print(f" Page title: {title}")
+        logger.info(f"Page title: {title}")
     
     def test_page_url(self, booking_page):
         """
@@ -133,4 +137,4 @@ class TestNavigation:
         """
         current_url = booking_page.driver.current_url
         assert config.TEST_URL in current_url
-        print(f" Current URL: {current_url}")
+        logger.info(f"Current URL: {current_url}")

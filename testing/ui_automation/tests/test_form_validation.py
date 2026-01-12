@@ -1,4 +1,7 @@
 import pytest
+import logging
+
+logger = logging.getLogger(__name__)
 
 @pytest.mark.form
 @pytest.mark.ui
@@ -20,7 +23,7 @@ class TestFormValidation:
         assert booking_page.is_element_visible(booking_page.LASTNAME_INPUT, timeout=5)
         assert booking_page.is_element_visible(booking_page.EMAIL_INPUT, timeout=5)
         assert booking_page.is_element_visible(booking_page.PHONE_INPUT, timeout=5)
-        print(" All form fields are visible")
+        logger.info("All form fields are visible")
     
     def test_reserve_now_button_present(self, booking_page):
         """
@@ -28,7 +31,7 @@ class TestFormValidation:
         """
         booking_page.click_room_book_now()
         assert booking_page.is_element_visible(booking_page.RESERVE_NOW_BUTTON_FIRST, timeout=5)
-        print(" Reserve Now button is present")
+        logger.info("Reserve Now button is present")
     
     def test_complete_booking_flow(self, booking_page, sample_booking_data):
         """
@@ -45,7 +48,7 @@ class TestFormValidation:
         booking_page.fill_phone(sample_booking_data["phone"])
         # Submit reservation
         booking_page.click_submit_reservation()
-        print(" Complete booking flow executed")
+        logger.info("Complete booking flow executed")
     
     def test_form_field_clear_functionality(self, booking_page):
         """
@@ -55,7 +58,7 @@ class TestFormValidation:
         booking_page.click_reserve_now()
         booking_page.fill_firstname("FirstName")
         booking_page.fill_firstname("UpdatedName")
-        print(" Form field clear and update works")
+        logger.info("Form field clear and update works")
 
 @pytest.mark.form
 @pytest.mark.ui
@@ -73,7 +76,7 @@ class TestFormBoundary:
         booking_page.click_reserve_now()
         long_name = "A" * 100
         booking_page.fill_firstname(long_name)
-        print(" Long firstname test executed")
+        logger.info("Long firstname test executed")
     
     def test_long_lastname(self, booking_page):
         """
@@ -83,7 +86,7 @@ class TestFormBoundary:
         booking_page.click_reserve_now()
         long_name = "B" * 100
         booking_page.fill_lastname(long_name)
-        print(" Long lastname test executed")
+        logger.info("Long lastname test executed")
     
     def test_special_characters_in_name(self, booking_page):
         """
@@ -93,7 +96,7 @@ class TestFormBoundary:
         booking_page.click_reserve_now()
         booking_page.fill_firstname("John@#$%")
         booking_page.fill_lastname("Doe!&*()")
-        print(" Special characters test executed")
+        logger.info("Special characters test executed")
     
     def test_numeric_values_in_name(self, booking_page):
         """
@@ -103,4 +106,4 @@ class TestFormBoundary:
         booking_page.click_reserve_now()
         booking_page.fill_firstname("12345")
         booking_page.fill_lastname("67890")
-        print(" Numeric values in name test executed")
+        logger.info("Numeric values in name test executed")

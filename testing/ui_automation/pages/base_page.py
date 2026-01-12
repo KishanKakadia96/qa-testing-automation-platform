@@ -3,6 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from testing.api_automation.configs.config import config
+import logging
+logger = logging.getLogger(__name__)
 
 class BasePage:
     """
@@ -97,3 +99,4 @@ class BasePage:
         if url and not url.startswith(('http://', 'https://')):
             url = f'https://{url}'
         self.driver.get(url)
+        logger.info(f"Navigated to URL from base_page value: {url}")

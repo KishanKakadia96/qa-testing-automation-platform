@@ -3,11 +3,64 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pytest
+import logging
 from datetime import datetime
+from pathlib import Path
 from drivers.driver_factory import DriverFactory
 from pages.home_page import HomePage
 from pages.booking_page import BookingPage
 from testing.api_automation.configs.config import config
+
+def pytest_configure(config):
+    """
+    Configure logging for UI automation tests
+    Creates testing/ui_automation/logs directory with session and module-level logs
+    """
+    # Create logs/session directory within ui_automation folder
+    log_dir = Path(__file__).parent.parent / "logs" / "session"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Session log file
+    session_log = log_dir / f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    
+    # Configure root logger
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(session_log, encoding='utf-8'),
+            logging.StreamHandler()
+        ]
+    )
+    
+    logging.info(f"UI Test session started - Logs: {session_log}")
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_test_logging(request):
+    """
+    Setup module-level logging for each test file
+    """
+    log_dir = Path(__file__).parent.parent / "logs" / "tests"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Get test module name
+    module_name = request.node.module.__name__.split('.')[-1]
+    module_log = log_dir / f"{module_name}.log"
+    
+    # Create file handler for this module
+    file_handler = logging.FileHandler(module_log, encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    
+    # Add handler to root logger
+    logger = logging.getLogger()
+    logger.addHandler(file_handler)
+    
+    yield
+    
+    # Remove handler after test
+    logger.removeHandler(file_handler)
+    file_handler.close()
 
 def pytest_addoption(parser):
     """
@@ -30,9 +83,6 @@ def driver(request):
     driver = DriverFactory.create_driver(browser=browser)
     driver.maximize_window()
     yield driver
-
-    current_url = driver.current_url
-    print(f"\nCurrent URL at teardown: {current_url}")
     
     # Take screenshot on failure
     if hasattr(request.node, 'rep_call') and request.node.rep_call.failed:

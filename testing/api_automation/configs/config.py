@@ -5,20 +5,16 @@ load_dotenv()
 
 # Configuration of environment variables for API testing
 class Config:
-    BASE_URL = os.environ.get("BASE_URL")
-    AUTH_ENDPOINT = os.environ.get("AUTH_ENDPOINT")
-    BOOKING_ENDPOINT = os.environ.get("BOOKING_ENDPOINT")
+    BASE_URL = str(os.environ.get("BASE_URL"))
+    AUTH_ENDPOINT = str(os.environ.get("AUTH_ENDPOINT"))
+    BOOKING_ENDPOINT = str(os.environ.get("BOOKING_ENDPOINT"))
 
-    USERNAME = os.environ.get("API_USERNAME")
-    PASSWORD = os.environ.get("API_PASSWORD")
+    USERNAME = str(os.environ.get("API_USERNAME"))
+    PASSWORD = str(os.environ.get("API_PASSWORD"))
 
-    TEST_URL = os.environ.get("TEST_URL")
-    SINGLE_ROOM_BOOK_LINK = os.environ.get("SINGLE_ROOM_BOOK_LINK")
-    DOUBLE_ROOM_BOOK_LINK = os.environ.get("DOUBLE_ROOM_BOOK_LINK")
-    SUITE_ROOM_BOOK_LINK = os.environ.get("SUITE_ROOM_BOOK_LINK")
-    BROWSER = os.environ.get("BROWSER")
+    TEST_URL = str(os.environ.get("TEST_URL"))
+    BROWSER = str(os.environ.get("BROWSER"))
     IMPLICIT_WAIT = int(os.environ.get("IMPLICIT_WAIT"))
     EXPLICIT_WAIT = int(os.environ.get("EXPLICIT_WAIT"))
-    HEADLESS = os.environ.get("HEADLESS")
-
+    HEADLESS = str(os.environ.get("HEADLESS"))
 config = Config()

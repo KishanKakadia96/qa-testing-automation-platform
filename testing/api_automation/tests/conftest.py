@@ -18,12 +18,50 @@ def load_test_data(filename: str):
 
 @pytest.fixture(scope="session", autouse=True)
 def configure_logging():
-    """Configure basic logging for the whole test session."""
+    """Configure logging for API automation tests with file and console output."""
+    # Create logs/session directory within api_automation folder
+    log_dir = Path(__file__).parent.parent / "logs" / "session"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Session log file
+    from datetime import datetime
+    session_log = log_dir / f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    
+    # Configure root logger
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler(session_log, encoding='utf-8'),
+            logging.StreamHandler()
+        ]
     )
-    logging.info("Logging configured for test session.")
+    logging.info(f"API Test session started - Logs: {session_log}")
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_api_test_logging(request):
+    """Setup module-level logging for each API test file."""
+    log_dir = Path(__file__).parent.parent / "logs" / "tests"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Get test module name
+    module_name = request.node.module.__name__.split('.')[-1]
+    module_log = log_dir / f"{module_name}.log"
+    
+    # Create file handler for this module
+    file_handler = logging.FileHandler(module_log, encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    
+    # Add handler to root logger
+    logger = logging.getLogger()
+    logger.addHandler(file_handler)
+    
+    yield
+    
+    # Remove handler after test
+    logger.removeHandler(file_handler)
+    file_handler.close()
 
 @pytest.fixture(scope="session")
 def auth_client():
