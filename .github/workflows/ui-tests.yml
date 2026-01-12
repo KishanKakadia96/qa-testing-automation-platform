@@ -11,6 +11,18 @@ jobs:
   ui-tests-chrome:
     runs-on: ubuntu-latest
 
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      AUTH_ENDPOINT: ${{ vars.AUTH_ENDPOINT }}
+      BOOKING_ENDPOINT: ${{ vars.BOOKING_ENDPOINT }}
+      API_USERNAME: ${{ vars.API_USERNAME }}
+      API_PASSWORD: ${{ vars.API_PASSWORD }}
+      TEST_URL: ${{ vars.TEST_URL }}
+      BROWSER: ${{ vars.BROWSER }}
+      IMPLICIT_WAIT: ${{ vars.IMPLICIT_WAIT }}
+      EXPLICIT_WAIT: ${{ vars.EXPLICIT_WAIT }}
+      HEADLESS: ${{ vars.HEADLESS }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,19 +43,19 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Create .env file from secrets
+      - name: Create .env file
         run: |
           cat << EOF > testing/api_automation/.env
-          BASE_URL="${{ secrets.BASE_URL }}"
-          AUTH_ENDPOINT="${{ secrets.AUTH_ENDPOINT }}"
-          BOOKING_ENDPOINT="${{ secrets.BOOKING_ENDPOINT }}"
-          API_USERNAME="${{ secrets.API_USERNAME }}"
-          API_PASSWORD="${{ secrets.API_PASSWORD }}"
-          TEST_URL="${{ secrets.TEST_URL }}"
-          BROWSER="${{ secrets.BROWSER }}"
-          IMPLICIT_WAIT="${{ secrets.IMPLICIT_WAIT }}"
-          EXPLICIT_WAIT="${{ secrets.EXPLICIT_WAIT }}"
-          HEADLESS="${{ secrets.HEADLESS }}"
+          BASE_URL="${{ env.BASE_URL }}"
+          AUTH_ENDPOINT="${{ env.AUTH_ENDPOINT }}"
+          BOOKING_ENDPOINT="${{ env.BOOKING_ENDPOINT }}"
+          API_USERNAME="${{ env.API_USERNAME }}"
+          API_PASSWORD="${{ env.API_PASSWORD }}"
+          TEST_URL="${{ env.TEST_URL }}"
+          BROWSER="${{ env.BROWSER }}"
+          IMPLICIT_WAIT="${{ env.IMPLICIT_WAIT }}"
+          EXPLICIT_WAIT="${{ env.EXPLICIT_WAIT }}"
+          HEADLESS="${{ env.HEADLESS }}"
           EOF
 
       - name: Run UI tests (Chrome)
