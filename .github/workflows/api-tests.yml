@@ -11,6 +11,14 @@ jobs:
   api-tests:
     runs-on: ubuntu-latest
 
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      AUTH_ENDPOINT: ${{ vars.AUTH_ENDPOINT }}
+      BOOKING_ENDPOINT: ${{ vars.BOOKING_ENDPOINT }}
+      API_USERNAME: ${{ vars.API_USERNAME }}
+      API_PASSWORD: ${{ vars.API_PASSWORD }}
+      TEST_URL: ${{ vars.TEST_URL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,13 +34,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Create .env file
+        run: |
+          cat << EOF > testing/api_automation/.env
+          BASE_URL="${{ env.BASE_URL }}"
+          AUTH_ENDPOINT="${{ env.AUTH_ENDPOINT }}"
+          BOOKING_ENDPOINT="${{ env.BOOKING_ENDPOINT }}"
+          API_USERNAME="${{ env.API_USERNAME }}"
+          API_PASSWORD="${{ env.API_PASSWORD }}"
+          TEST_URL="${{ env.TEST_URL }}"
+          EOF
+
       - name: Run API tests
-        env:
-          TEST_URL: ${{ secrets.TEST_URL }}
-          API_USERNAME: ${{ secrets.API_USERNAME }}
-          API_PASSWORD: ${{ secrets.API_PASSWORD }}
-          AUTH_ENDPOINT: ${{ secrets.AUTH_ENDPOINT }}
-          BOOKING_ENDPOINT: ${{ secrets.BOOKING_ENDPOINT }}
         working-directory: testing/api_automation
         run: |
           pytest tests/ \

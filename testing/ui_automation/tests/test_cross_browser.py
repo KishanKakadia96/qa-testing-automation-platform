@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class TestCrossBrowser:
     """Cross-browser compatibility tests"""
     
-    @pytest.fixture(params=["chrome", "edge"])
+    @pytest.fixture(params=["chrome", "firefox"])
     def cross_browser_driver(self, request):
         """Create driver for different browsers"""
         driver = DriverFactory.create_driver(browser=request.param)

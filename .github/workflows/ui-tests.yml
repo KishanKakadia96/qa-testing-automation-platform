@@ -43,6 +43,11 @@ jobs:
         with:
           chrome-version: stable
 
+      - name: Set up Firefox
+        uses: browser-actions/setup-firefox@latest
+        with:
+          firefox-version: latest
+
       - name: Create .env file
         run: |
           cat << EOF > testing/api_automation/.env
@@ -66,8 +71,7 @@ jobs:
             --html=reports/ui_test_report.html \
             --self-contained-html \
             -v \
-            --tb=short \
-            -m "not edge"
+            --tb=short
 
       - name: Upload test report
         if: always()

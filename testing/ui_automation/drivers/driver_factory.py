@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from testing.api_automation.configs.config import config
 import os
 
@@ -38,22 +38,16 @@ class DriverFactory:
             driver.set_page_load_timeout(1000)
             return driver
             
-        elif browser == "edge":
-            options = EdgeOptions()
+        elif browser == "firefox":
+            options = FirefoxOptions()
             if is_headless:
-                options.add_argument("--headless=new")
-            options.add_argument("--start-maximized")
-            options.add_argument("--disable-notifications")
-            options.add_argument("--disable-popup-blocking")
-            options.add_argument("--inprivate")
-            options.add_argument("--disable-blink-features=AutomationControlled")
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--disable-gpu")
-            options.add_argument("--window-size=1920,1080")
-            options.page_load_strategy = 'normal'
+                options.add_argument("--headless")
+            options.add_argument("--width=1920")
+            options.add_argument("--height=1080")
+            options.set_preference("dom.webnotifications.enabled", False)
+            options.set_preference("dom.disable_open_during_load", True)
             
-            driver = webdriver.Edge(options=options)
+            driver = webdriver.Firefox(options=options)
             driver.implicitly_wait(config.IMPLICIT_WAIT)
             driver.set_page_load_timeout(1000)
             return driver

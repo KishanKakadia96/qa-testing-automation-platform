@@ -70,7 +70,7 @@ def pytest_addoption(parser):
         "--browser",
         action="store",
         default="chrome",
-        help="Browser to run tests: chrome, firefox, edge"
+        help="Browser to run tests: chrome, firefox"
     )
 
 @pytest.fixture(scope="function")
