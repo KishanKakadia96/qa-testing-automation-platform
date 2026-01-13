@@ -49,7 +49,7 @@ jobs:
         working-directory: testing/api_automation
         run: |
           pytest tests/ \
-            --html=reports/test_report.html \
+            --html=testing/api_automation/reports/test_report.html \
             --self-contained-html \
             -v \
             --tb=short

@@ -87,7 +87,7 @@ def test_update_booking_valid(booking_client, sample_booking_data, auth_token):
 
     # Verify update
     updates_value = booking_client.get_booking(booking_id)
-    assert updates_value["firstname"] == "Updated"
+    assert updates_value.json()["firstname"] == "Updated"
 
     print(f"Booking with ID: {booking_id} updated successfully")
 
