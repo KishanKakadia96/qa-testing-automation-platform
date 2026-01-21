@@ -248,3 +248,91 @@ The automated test suite executed 41 API tests and identified **27 critical defe
 - **Accessibility:** System should support international characters
 
 ---
+
+## MEDIUM - Authentication Flaws (4 Defects)
+
+### BUG-AUTH-001: Weak Token Expiration
+- **Test:** `test_token_expiration`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** Authentication tokens do not expire
+- **Expected:** Tokens should expire after reasonable time period
+- **Actual:** Tokens remain valid indefinitely
+- **Impact:** unauthorized access if token is compromised
+- **Security Risk:** Security Misconfiguration
+
+### BUG-AUTH-002: Missing Rate Limiting on Authentication Endpoint
+- **Test:** `test_auth_rate_limiting`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** No rate limiting on /auth endpoint allows attacks
+- **Expected:** HTTP 429 after multiple failed attempts
+- **Actual:** Unlimited authentication attempts allowed
+- **Impact:** credential stuffing
+- **Security Risk:** Broken Authentication
+
+### BUG-AUTH-003: Invalid Credentials Error Message Too Verbose
+- **Test:** `test_invalid_credentials`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** Error messages reveal whether username or password is incorrect
+- **Expected:** Generic "Invalid credentials" message
+- **Actual:** "Username not found" or "Incorrect password"
+- **Impact:** Username enumeration, helps attackers in credential attacks
+- **Security Risk:** Information Disclosure
+
+### BUG-AUTH-004: Token Not Validated on Protected Endpoints
+- **Test:** `test_token_validation`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** Some protected endpoints accept malformed or invalid tokens
+- **Expected:** HTTP 401 for invalid tokens
+- **Actual:** HTTP 200 - Operations succeed with invalid tokens
+- **Impact:** Unauthorized access, bypass of authentication controls
+- **Security Risk:** Broken Authentication
+
+---
+
+## MEDIUM - Functional Bugs (3 Defects)
+
+### BUG-FUNC-001: Booking ID Not Returned in POST Response
+- **Test:** `test_create_booking`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** POST /booking does not consistently return bookingid
+- **Expected:** Response includes bookingid in standard format
+- **Actual:** Inconsistent response structure
+- **Impact:** Client applications cannot retrieve created booking ID
+- **API Design:** Response format should be consistent
+
+### BUG-FUNC-002: DELETE Request Does Not Return Proper Status
+- **Test:** `test_delete_booking`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** DELETE endpoint returns incorrect status codes
+- **Expected:** HTTP 200 or 204 on successful deletion
+- **Actual:** HTTP 201 returned
+- **Impact:** Misleading response codes
+- **REST Compliance:** DELETE should not return 201 Created
+
+### BUG-FUNC-003: Search/Filter Functionality Not Implemented
+- **Test:** `test_search_bookings`
+- **Severity:** Medium
+- **Status:** Failed
+- **Description:** GET /booking does not support query parameters for filtering
+- **Payload:** `GET /booking?firstname=John&lastname=Doe`
+- **Expected:** Filtered list of matching bookings
+- **Actual:** HTTP 200 but all bookings returned (no filtering applied)
+- **Impact:** Performance issues, inability to search specific bookings
+- **Functionality Gap:** Missing critical search feature
+
+---
+
+## Priority
+
+**Priority 1**: Address all critical security vulnerabilities (BUG-SEC-001 through BUG-SEC-006)  
+**Priority 2**: Implement comprehensive input validation (BUG-VAL-001 through BUG-VAL-014)  
+**Priority 3**: Fix authentication flaws (BUG-AUTH-001 through BUG-AUTH-004)  
+**Priority 4**: Resolve functional inconsistencies (BUG-FUNC-001 through BUG-FUNC-003)
+
+---
