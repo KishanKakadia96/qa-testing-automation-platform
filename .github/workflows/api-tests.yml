@@ -18,6 +18,10 @@ jobs:
       API_USERNAME: ${{ vars.API_USERNAME }}
       API_PASSWORD: ${{ vars.API_PASSWORD }}
       TEST_URL: ${{ vars.TEST_URL }}
+      BROWSER: ${{ vars.BROWSER }}
+      IMPLICIT_WAIT: ${{ vars.IMPLICIT_WAIT }}
+      EXPLICIT_WAIT: ${{ vars.EXPLICIT_WAIT }}
+      HEADLESS: ${{ vars.HEADLESS }}
 
     steps:
       - name: Checkout code
@@ -43,6 +47,10 @@ jobs:
           API_USERNAME="${{ env.API_USERNAME }}"
           API_PASSWORD="${{ env.API_PASSWORD }}"
           TEST_URL="${{ env.TEST_URL }}"
+          BROWSER="${{ env.BROWSER }}"
+          IMPLICIT_WAIT="${{ env.IMPLICIT_WAIT }}"
+          EXPLICIT_WAIT="${{ env.EXPLICIT_WAIT }}"
+          HEADLESS="${{ env.HEADLESS }}"
           EOF
 
       - name: Run API tests

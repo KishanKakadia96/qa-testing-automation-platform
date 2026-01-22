@@ -14,6 +14,18 @@ jobs:
     name: API Automation Tests
     runs-on: ubuntu-latest
 
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      AUTH_ENDPOINT: ${{ vars.AUTH_ENDPOINT }}
+      BOOKING_ENDPOINT: ${{ vars.BOOKING_ENDPOINT }}
+      API_USERNAME: ${{ vars.API_USERNAME }}
+      API_PASSWORD: ${{ vars.API_PASSWORD }}
+      TEST_URL: ${{ vars.TEST_URL }}
+      BROWSER: ${{ vars.BROWSER }}
+      IMPLICIT_WAIT: ${{ vars.IMPLICIT_WAIT }}
+      EXPLICIT_WAIT: ${{ vars.EXPLICIT_WAIT }}
+      HEADLESS: ${{ vars.HEADLESS }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,11 +41,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Create .env file
+        run: |
+          cat << EOF > testing/api_automation/.env
+          BASE_URL="${{ env.BASE_URL }}"
+          AUTH_ENDPOINT="${{ env.AUTH_ENDPOINT }}"
+          BOOKING_ENDPOINT="${{ env.BOOKING_ENDPOINT }}"
+          API_USERNAME="${{ env.API_USERNAME }}"
+          API_PASSWORD="${{ env.API_PASSWORD }}"
+          TEST_URL="${{ env.TEST_URL }}"
+          BROWSER="${{ env.BROWSER }}"
+          IMPLICIT_WAIT="${{ env.IMPLICIT_WAIT }}"
+          EXPLICIT_WAIT="${{ env.EXPLICIT_WAIT }}"
+          HEADLESS="${{ env.HEADLESS }}"
+          EOF
+
       - name: Run API tests
-        env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          API_USERNAME: ${{ secrets.API_USERNAME }}
-          API_PASSWORD: ${{ secrets.API_PASSWORD }}
         working-directory: testing/api_automation
         run: |
           pytest tests/ \
@@ -54,7 +77,18 @@ jobs:
   ui-tests:
     name: UI Automation Tests (Chrome)
     runs-on: ubuntu-latest
-    needs: api-tests
+
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      AUTH_ENDPOINT: ${{ vars.AUTH_ENDPOINT }}
+      BOOKING_ENDPOINT: ${{ vars.BOOKING_ENDPOINT }}
+      API_USERNAME: ${{ vars.API_USERNAME }}
+      API_PASSWORD: ${{ vars.API_PASSWORD }}
+      TEST_URL: ${{ vars.TEST_URL }}
+      BROWSER: ${{ vars.BROWSER }}
+      IMPLICIT_WAIT: ${{ vars.IMPLICIT_WAIT }}
+      EXPLICIT_WAIT: ${{ vars.EXPLICIT_WAIT }}
+      HEADLESS: ${{ vars.HEADLESS }}
 
     steps:
       - name: Checkout code
@@ -75,6 +109,21 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
+
+      - name: Create .env file
+        run: |
+          cat << EOF > testing/ui_automation/.env
+          BASE_URL="${{ env.BASE_URL }}"
+          AUTH_ENDPOINT="${{ env.AUTH_ENDPOINT }}"
+          BOOKING_ENDPOINT="${{ env.BOOKING_ENDPOINT }}"
+          API_USERNAME="${{ env.API_USERNAME }}"
+          API_PASSWORD="${{ env.API_PASSWORD }}"
+          TEST_URL="${{ env.TEST_URL }}"
+          BROWSER="${{ env.BROWSER }}"
+          IMPLICIT_WAIT="${{ env.IMPLICIT_WAIT }}"
+          EXPLICIT_WAIT="${{ env.EXPLICIT_WAIT }}"
+          HEADLESS="${{ env.HEADLESS }}"
+          EOF
 
       - name: Run UI tests
         working-directory: testing/ui_automation
